@@ -1,0 +1,8 @@
+{
+  "name": "mini-personal-project",
+  "version": "1.0.0",
+  "description": "This is a mini personal project",
+  "main": "index.js",
+  "author": "Amin Taghipour <amin.taghipour27@gmail.com>",
+  "license": "MIT"
+}
