@@ -7,3 +7,10 @@ gulp.task("compileSassToCSS", () => {
     .pipe(gulpSass())
     .pipe(gulp.dest("./App/css"));
 });
+
+gulp.task(
+  "watch",
+  gulp.series("compileSassToCSS", () => {
+    gulp.watch("./App/scss/*.scss", gulp.series("compileSassToCSS"));
+  })
+);
