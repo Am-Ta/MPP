@@ -10,6 +10,8 @@ const gulpIf = require("gulp-if");
 const gulpImagemin = require("gulp-imagemin"); // the images minify
 const gulpCache = require("gulp-cache");
 
+const del = require("del");
+
 // The Compile Sass to CSS task
 gulp.task("compileSassToCSS", () => {
   return gulp
@@ -41,6 +43,11 @@ gulp.task("fonts", () => {
   return gulp.src("./App/font/*").pipe(gulp.dest("./dist/font"));
 });
 
+// Cleaning
+gulp.task("clean", () => {
+  return del.sync("./dist");
+});
+
 // Watch Task
 gulp.task(
   "watch",
@@ -48,3 +55,4 @@ gulp.task(
     gulp.watch("./App/scss/*.scss", gulp.series("compileSassToCSS"));
   })
 );
+
