@@ -1,10 +1,14 @@
 const gulp = require("gulp");
+
 const gulpSass = require("gulp-sass");
+
 const gulpUseref = require("gulp-useref"); // the Files concatenate
 const gulpUglify = require("gulp-uglify"); // the JS files minify
 const gulpCssnano = require("gulp-cssnano"); // the CSS files minify
 const gulpIf = require("gulp-if");
+
 const gulpImagemin = require("gulp-imagemin"); // the images minify
+const gulpCache = require("gulp-cache");
 
 // The Compile Sass to CSS task
 gulp.task("compileSassToCSS", () => {
@@ -28,8 +32,13 @@ gulp.task("concatAndOpt", () => {
 gulp.task("imageOpt", () => {
   return gulp
     .src("./App/img/*.+(png|jpeg|jpg|svg|gif)")
-    .pipe(gulpImagemin())
+    .pipe(gulpCache(gulpImagemin()))
     .pipe(gulp.dest("./dist/img"));
+});
+
+// Send font from App to dist
+gulp.task("fonts", () => {
+  return gulp.src("./App/font/*").pipe(gulp.dest("./dist/font"));
 });
 
 // Watch Task
