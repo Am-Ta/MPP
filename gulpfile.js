@@ -2,60 +2,65 @@ const gulp = require("gulp");
 
 const gulpSass = require("gulp-sass");
 
-const gulpUseref = require("gulp-useref"); // the Files concatenate
-const gulpUglify = require("gulp-uglify"); // the JS files minify
-const gulpCssnano = require("gulp-cssnano"); // the CSS files minify
+const gulpUseref = require("gulp-useref"); // concatenating the files
+const gulpUglify = require("gulp-uglify"); // minifing the JS files
+const cssnano = require("cssnano"); // minifing the CSS files
+const autoprefixer = require("autoprefixer"); // auto CSS prefixes
+const gulpPostcss = require("gulp-postcss");
 const gulpIf = require("gulp-if");
 
-const gulpImagemin = require("gulp-imagemin"); // the images minify
-const gulpCache = require("gulp-cache");
+const gulpImagemin = require("gulp-imagemin"); // minifing the images
 
 const del = require("del");
 
+// The files path
 const files = {
-  scssPath: "./App/scss/*.scss",
-  cssPath: "./App/css",
+  scssPath: {
+    src: "./App/scss/*.scss",
+    dest: "./App/css"
+  },
   indexPath: "./App/index.html",
   distPath: "./dist",
-  impPath: {
+  imgPath: {
     src: "./App/img/*.+(png|jpeg|jpg|svg|gif)",
-    dist: "./dist/img"
+    dest: "./dist/img"
   },
   fontPath: {
     src: "./App/font/*",
-    dist: "./dist/font"
+    dest: "./dist/font"
   }
 };
 
-// The Compile Sass to CSS task
+// Compiling the Sass to the CSS
 function compileSassToCSS() {
   return gulp
-    .src(files.scssPath)
+    .src(files.scssPath.src)
     .pipe(gulpSass())
-    .pipe(gulp.dest(files.cssPath));
+    .pipe(gulp.dest(files.scssPath.dest));
 }
 
-// Concatenate and Optimize the CSS and JS files
+// Concatenating and Optimizing the CSS and JS files
 function concatAndOpt() {
+  const cssPlugin = [autoprefixer({ browsers: ["last 2 version"] }), cssnano()];
   return gulp
     .src(files.indexPath)
     .pipe(gulpUseref())
     .pipe(gulpIf("*.js", gulpUglify()))
-    .pipe(gulpIf("*.css", gulpCssnano()))
+    .pipe(gulpIf("*.css", gulpPostcss(cssPlugin)))
     .pipe(gulp.dest(files.distPath));
 }
 
-// Optimize the images
+// Optimizing the images
 function imgOpt() {
   return gulp
-    .src(files.impPath.src)
-    .pipe(gulpCache(gulpImagemin()))
-    .pipe(gulp.dest(fils.img.dist));
+    .src(files.imgPath.src)
+    .pipe(gulpImagemin())
+    .pipe(gulp.dest(files.imgPath.dest));
 }
 
-// Send font from App to dist
+// Just send font from App to dist
 function fonts() {
-  return gulp.src(files.fontPath.src).pipe(gulp.dest(files.fontPath.dist));
+  return gulp.src(files.fontPath.src).pipe(gulp.dest(files.fontPath.dest));
 }
 
 // Cleaning
@@ -63,9 +68,9 @@ function clean() {
   return del([files.distPath]);
 }
 
-// Watch Task
+// Watch
 function watchFiles() {
-  gulp.watch(files.scssPath, compileSassToCSS);
+  gulp.watch(files.scssPath.src, compileSassToCSS);
 }
 
 // Gulp tasks
