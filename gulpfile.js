@@ -12,47 +12,81 @@ const gulpCache = require("gulp-cache");
 
 const del = require("del");
 
+const files = {
+  scssPath: "./App/scss/*.scss",
+  cssPath: "./App/css",
+  indexPath: "./App/index.html",
+  distPath: "./dist",
+  impPath: {
+    src: "./App/img/*.+(png|jpeg|jpg|svg|gif)",
+    dist: "./dist/img"
+  },
+  fontPath: {
+    src: "./App/font/*",
+    dist: "./dist/font"
+  }
+};
+
 // The Compile Sass to CSS task
-gulp.task("compileSassToCSS", () => {
+function compileSassToCSS() {
   return gulp
-    .src("./App/scss/styles.scss")
+    .src(files.scssPath)
     .pipe(gulpSass())
-    .pipe(gulp.dest("./App/css"));
-});
+    .pipe(gulp.dest(files.cssPath));
+}
 
 // Concatenate and Optimize the CSS and JS files
-gulp.task("concatAndOpt", () => {
+function concatAndOpt() {
   return gulp
-    .src("./App/index.html")
+    .src(files.indexPath)
     .pipe(gulpUseref())
     .pipe(gulpIf("*.js", gulpUglify()))
     .pipe(gulpIf("*.css", gulpCssnano()))
-    .pipe(gulp.dest("./dist"));
-});
+    .pipe(gulp.dest(files.distPath));
+}
 
 // Optimize the images
-gulp.task("imageOpt", () => {
+function imgOpt() {
   return gulp
-    .src("./App/img/*.+(png|jpeg|jpg|svg|gif)")
+    .src(files.impPath.src)
     .pipe(gulpCache(gulpImagemin()))
-    .pipe(gulp.dest("./dist/img"));
-});
+    .pipe(gulp.dest(fils.img.dist));
+}
 
 // Send font from App to dist
-gulp.task("fonts", () => {
-  return gulp.src("./App/font/*").pipe(gulp.dest("./dist/font"));
-});
+function fonts() {
+  return gulp.src(files.fontPath.src).pipe(gulp.dest(files.fontPath.dist));
+}
 
 // Cleaning
-gulp.task("clean", () => {
-  return del.sync("./dist");
-});
+function clean() {
+  return del([files.distPath]);
+}
 
 // Watch Task
-gulp.task(
-  "watch",
-  gulp.series("compileSassToCSS", () => {
-    gulp.watch("./App/scss/*.scss", gulp.series("compileSassToCSS"));
-  })
-);
+function watchFiles() {
+  gulp.watch(files.scssPath, compileSassToCSS);
+}
 
+// Gulp tasks
+const SASS_TO_CSS = gulp.series(compileSassToCSS);
+const CONCAT_OPT = gulp.series(concatAndOpt);
+const IMG_OPT = gulp.series(imgOpt);
+const FONTS = gulp.series(fonts);
+const CLEAN = gulp.series(clean);
+const BUILD = gulp.series(
+  clean,
+  compileSassToCSS,
+  concatAndOpt,
+  gulp.parallel(imgOpt, fonts)
+);
+const WATCH = gulp.series(compileSassToCSS, watchFiles);
+
+exports.sass = SASS_TO_CSS;
+exports.concatAndOpt = CONCAT_OPT;
+exports.imgOpt = IMG_OPT;
+exports.fonts = FONTS;
+exports.clean = CLEAN;
+exports.build = BUILD;
+exports.default = BUILD;
+exports.watch = WATCH;
