@@ -1,0 +1,106 @@
+@font-face {
+  font-family: 'quicksand';
+  src: url("../font/Quicksand-Light.ttf") format("truetype");
+  font-weight: 300; }
+
+@font-face {
+  font-family: 'quicksand';
+  src: url("../font/Quicksand-Regular.ttf") format("truetype");
+  font-weight: 400; }
+
+@font-face {
+  font-family: 'quicksand';
+  src: url("../font/Quicksand-Medium.ttf") format("truetype");
+  font-weight: 500; }
+
+@font-face {
+  font-family: 'quicksand';
+  src: url("../font/Quicksand-Bold.ttf") format("truetype");
+  font-weight: 700; }
+
+.clearfix:after,
+.clearfix:before {
+  content: '';
+  display: table; }
+
+.clearfix:after {
+  clear: both; }
+
+body {
+  font-family: 'quicksand'; }
+
+.banner {
+  background-image: url("../img/banner.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  min-height: 100vh; }
+  .banner:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(34, 24, 28, 0.7);
+    z-index: 10; }
+  .banner .banner__content {
+    color: #f6e8ea;
+    text-align: center;
+    position: relative;
+    z-index: 11; }
+
+.writer__text {
+  font-size: 2em;
+  line-height: 1.5; }
+  .writer__text a {
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    color: #f6e8ea;
+    transition: .3s; }
+    .writer__text a:after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: .2em;
+      background-color: #d64933; }
+    .writer__text a:hover {
+      background-color: rgba(214, 73, 51, 0.6); }
+
+.banner__info .banner__text {
+  font-size: 1.5em;
+  line-height: 1.4; }
+
+.banner__info .btn {
+  border: 3px solid #269e4a;
+  cursor: pointer;
+  background-color: rgba(38, 158, 74, 0.8);
+  text-transform: capitalize;
+  color: #f6e8ea;
+  font-size: 1em;
+  transition: .3s;
+  letter-spacing: 2px; }
+  .banner__info .btn:hover {
+    background-color: rgba(38, 158, 74, 0.6); }
+
+@media screen and (min-width: 768px) {
+  .writer__text {
+    font-size: 2.5em; } }
+
+@media screen and (min-width: 992px) {
+  .banner__info .banner__text {
+    font-size: 2em; } }
+
+@media screen and (min-width: 1200px) {
+  .writer__text {
+    font-size: 3em; }
+  .banner__info .banner__text {
+    font-size: 2em; }
+  .banner__info .btn {
+    font-size: 1.5em; }
+  .banner .banner__content {
+    text-align: left; } }
