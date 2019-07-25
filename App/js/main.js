@@ -1,4 +1,4 @@
-const writerText = document.querySelector(".writer__text");
+const writerText = document.querySelector(".writer .writer__text");
 
 // Type Writer
 const typewriter = new Typewriter(writerText, {
@@ -35,3 +35,13 @@ typewriter
   )
   .pauseFor(2000)
   .start();
+
+// Hamburger Menu
+const hamburgerIcon = document.querySelector(".hamburger");
+let nav = document.querySelector(".nav");
+let icon = document.querySelector(".icon");
+
+hamburgerIcon.addEventListener("click", () => {
+  nav.classList.toggle("active");
+  icon.classList.toggle("active");
+});
