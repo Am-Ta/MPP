@@ -1,4 +1,5 @@
 const gulp = require("gulp");
+const gulpBabel = require("gulp-babel");
 
 const gulpSass = require("gulp-sass");
 
@@ -45,6 +46,7 @@ function concatAndOpt() {
   return gulp
     .src(files.indexPath)
     .pipe(gulpUseref())
+    .pipe(gulpIf("*.js", gulpBabel()))
     .pipe(gulpIf("*.js", gulpUglify()))
     .pipe(gulpIf("*.css", gulpPostcss(cssPlugin)))
     .pipe(gulp.dest(files.distPath));

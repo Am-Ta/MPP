@@ -11,10 +11,13 @@
     "typewriter-effect": "^2.8.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "autoprefixer": "^9.6.1",
     "cssnano": "^4.1.10",
     "del": "^5.0.0",
     "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
     "gulp-if": "^3.0.0",
     "gulp-imagemin": "^6.0.0",
     "gulp-postcss": "^8.0.0",
